@@ -147,10 +147,9 @@
             document.getElementById(tabId).classList.add('active');
         }
 
-        /*
         document.addEventListener('DOMContentLoaded', () => {
             renderTexts();
-
+            /*
             async function fetchSpreadsheetData() {
                 try {
                     const response = await fetch('Kalkulu-orri izengabea.xlsx');
@@ -184,13 +183,12 @@
                 } catch (error) {
                     console.error('Error fetching or parsing spreadsheet:', error);
                 }
-            }
-            */
+            }*/
 
             async function fetchSpreadsheetData() {
                 try {
                     // Assuming the uploaded file path or URL is passed correctly here
-                    const response = await fetch('Kalkulu-orri izengabea.xlsx'); // Replace with actual accessible path
+                    const response = await fetch('/mnt/data/Kalkulu-orri izengabea.xlsx'); // Replace with actual accessible path
                     if (!response.ok) throw new Error('Spreadsheet not found');
 
                     const data = await response.arrayBuffer();
