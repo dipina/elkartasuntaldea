@@ -213,6 +213,46 @@
                     ]
                 };
 
+                /*
+                const fundingConfig = {
+                    type: 'line',
+                    data: fundingData,
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false, // Allows the chart to resize dynamically
+                        plugins: { 
+                            legend: { 
+                                position: 'bottom', // Move legend below the chart for better smartphone visibility
+                                labels: {
+                                    font: {
+                                        size: 10 // Smaller font for better fit on small screens
+                                    }
+                                }
+                            } 
+                        },
+                        scales: {
+                            x: { 
+                                title: { display: true, text: 'Day of December' },
+                                ticks: {
+                                    maxRotation: 45, // Rotates ticks for better readability
+                                    font: {
+                                        size: 10 // Smaller font size for x-axis labels
+                                    }
+                                }
+                            },
+                            y: { 
+                                title: { display: true, text: 'Funds Collected (€)' },
+                                ticks: {
+                                    font: {
+                                        size: 10 // Smaller font size for y-axis labels
+                                    }
+                                }
+                            }
+                        }
+                    }
+                };
+                */
+
                 const fundingConfig = {
                     type: 'line',
                     data: fundingData,
@@ -225,6 +265,7 @@
                         }
                     }
                 };
+                
 
                 const progressData = {
                     labels: ['Collected', 'Remaining'],
