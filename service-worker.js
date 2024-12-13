@@ -3,13 +3,14 @@ const urlsToCache = [
   '/',
   '/index.html',
   '/styles.css',
-  '/elkartasun.png',
+  '/elkartasun.png', // Add the logo to cache
   '/config.json',
   '/manifest.json',
   '/service-worker.js',
   'https://cdn.jsdelivr.net/npm/chart.js',
   'https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js'
 ];
+
 
 self.addEventListener('install', event => {
   event.waitUntil(
@@ -49,3 +50,6 @@ self.addEventListener('activate', event => {
     })
   );
 });
+
+
+
