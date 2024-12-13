@@ -93,7 +93,7 @@
                     donateTab: 'Eman',
                     turkanaTab: 'Turkana',
                     campaignTitle: 'Gabonetako kanpainaren aurrerapena',
-                    campaignDescription: 'Gabonetako kanpainan jasotzen den dirua, Aztivate klinikan analisiak egiteko laborategi bat martxan jartzera eta haurrak egunean 2 bazkari izatera bideratzea. Azken finean, Turkana herriaren bizi iraupenerako izatea. \n\nBehar gaituzte!! \n\nEskerrik asko zuen inplikazioagatik. \n\n<i>“Gauza txikiak dira aldaketa handien erantzuleak” - Paulo Coelho</i>\n\nELKARTASUN TALDEA',
+                    campaignDescription: 'Gabonetako kanpainan jasotzen den dirua, Aztivate klinikan analisiak egiteko laborategi bat martxan jartzera eta haurrak egunean 2 bazkari izatera bideratzea. Azken finean, Turkana herriaren bizi iraupenerako izatea. <br><br>Behar gaituzte!! <br><br>Eskerrik asko zuen inplikazioagatik. <br><br><i>“Gauza txikiak dira aldaketa handien erantzuleak” - Paulo Coelho</i><br><br>ELKARTASUN TALDEA',
                     donateTitle: 'Eman',
                     donateDescription: 'Urtero bezala, laguntza ekonomiko hau bi modutan egitea posible izangoduzue: ikasleek eramango duten sobreetan dirua sartu eta ikastolarabueltatuz edota hurrengo kontu korrontean ingresatuz: <br><b>ES79 2095 3185 7710 9039 3959</b>',
                     turkanaTitle: 'Turkana',
@@ -105,7 +105,7 @@
                     donateTab: 'Donar',
                     turkanaTab: 'Turkana',
                     campaignTitle: 'Progreso de la campaña de Navidad',
-                    campaignDescription: 'El dinero recaudado en la campaña de Navidad se destina a poner en marcha un laboratorio para análisis en la clínica Aztivate y a garantizar que los niños reciban dos comidas al día. En definitiva, para la supervivencia del pueblo de Turkana. \n\n¡Nos necesitan! \n\nGracias por su implicación. \n\n<i>“Las pequeñas cosas son responsables de los grandes cambios” </i>- Paulo Coelho\n\nEQUIPO DE SOLIDARIDAD',
+                    campaignDescription: 'El dinero recaudado en la campaña de Navidad se destina a poner en marcha un laboratorio para análisis en la clínica Aztivate y a garantizar que los niños reciban dos comidas al día. En definitiva, para la supervivencia del pueblo de Turkana. <br><br>¡Nos necesitan! <br><br>Gracias por su implicación. <br><br><i>“Las pequeñas cosas son responsables de los grandes cambios” </i>- Paulo Coelho<br><br>EQUIPO DE SOLIDARIDAD',
                     donateTitle: 'Donar',
                     donateDescription: 'Como cada año, esta ayuda económica se puede realizar de dos maneras: introduciendo el dinero en los sobres que llevarán los estudiantes y devolviéndolos a la escuela o ingresándolo en la siguiente cuenta bancaria: <br><b>ES79 2095 3185 7710 9039 3959</b>',
                     turkanaTitle: 'Turkana',
@@ -117,7 +117,7 @@
                     donateTab: 'Donate',
                     turkanaTab: 'Turkana',
                     campaignTitle: 'Christmas Campaign Progress',
-                    campaignDescription: 'The money collected during the Christmas campaign will be used to set up a laboratory for analysis at the Aztivate clinic and to ensure that children receive two meals a day. Ultimately, it is for the survival of the Turkana people. \n\nThey need us! \n\nThank you for your involvement. \n\n<i>“Small things are responsible for big changes”</i> - Paulo Coelho\n\nSOLIDARITY TEAM',
+                    campaignDescription: 'The money collected during the Christmas campaign will be used to set up a laboratory for analysis at the Aztivate clinic and to ensure that children receive two meals a day. Ultimately, it is for the survival of the Turkana people. <br><br>They need us! <br><br>Thank you for your involvement. <br><br><i>“Small things are responsible for big changes”</i> - Paulo Coelho<br><br>SOLIDARITY TEAM',
                     donateTitle: 'Donate',
                     donateDescription: 'As every year, this financial support can be made in two ways: by putting money in the envelopes that the students will carry and returning them to the school, or by depositing it in the following bank account: <br><b>ES79 2095 3185 7710 9039 3959</b>',
                     turkanaTitle: 'Turkana',
@@ -133,13 +133,13 @@
             document.getElementById('turkanaTab').innerText = selectedTexts.turkanaTab;
 
             document.getElementById('campaignTitle').innerText = selectedTexts.campaignTitle;
-            document.getElementById('campaignDescription').innerText = selectedTexts.campaignDescription;
+            document.getElementById('campaignDescription').innerHTML = selectedTexts.campaignDescription;
 
             document.getElementById('donateTitle').innerText = selectedTexts.donateTitle;
-            document.getElementById('donateDescription').innerText = selectedTexts.donateDescription;
+            document.getElementById('donateDescription').innerHTML = selectedTexts.donateDescription;
 
             document.getElementById('turkanaTitle').innerText = selectedTexts.turkanaTitle;
-            document.getElementById('turkanaDescription').innerText = selectedTexts.turkanaDescription;
+            document.getElementById('turkanaDescription').innerHTML = selectedTexts.turkanaDescription;
         }
 
         function showTab(tabId) {
