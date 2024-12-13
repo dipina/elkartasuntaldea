@@ -79,17 +79,20 @@ body {
 }
 
 /* Chart styling */
-/*
+
 canvas {
     display: block;
     margin: 20px auto;
     max-width: 90%;
-}*/
+    height: auto; /* Adjusts height proportionally to width */
+}
 
+/*
 canvas {
     max-width: 100%;
     height: auto; /* Adjusts height proportionally to width */
 }
+*/
 
 /* Section titles and descriptions */
 h1 {
