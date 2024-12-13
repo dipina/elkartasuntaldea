@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="manifest" href="manifest.json">
+	<link rel="stylesheet" href="styles.css">
+    <title>Funding Campaign</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+    <style>
+        .tab {
+            display: none;
+        }
+        .tab.active {
+            display: block;
+        }
+        .tabs {
+            margin-bottom: 20px;
+        }
+        .tabs button {
+            margin-right: 10px;
+            padding: 10px;
+            cursor: pointer;
+        }
+        .lang-select {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+        .lang-select a {
+            margin: 0 5px;
+            cursor: pointer;
+        }
+        .logo {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .logo img {
+            max-width: 150px;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="lang-select">
+        <a onclick="setLanguage('eus')">EUS</a>
+        <a onclick="setLanguage('es')">ES</a>
+        <a onclick="setLanguage('en')">EN</a>
+    </div>
+
+    <div class="logo">
+        <img src="elkartasun.png" alt="Elkartasun Logo">
+    </div>
+
+    <div class="tabs">
+        <button onclick="showTab('campaignStatus')" id="campaignTab"></button>
+        <button onclick="showTab('donate')" id="donateTab"></button>
+        <button onclick="showTab('turkana')" id="turkanaTab"></button>
+    </div>
+
+    <div id="campaignStatus" class="tab active">
+        <h1 id="campaignTitle"></h1>
+        <p id="campaignDescription"></p>
+        <canvas id="fundingChart" width="800" height="400"></canvas>
+        <canvas id="progressChart" width="800" height="400"></canvas>
+    </div>
+
+    <div id="donate" class="tab">
+        <h1 id="donateTitle"></h1>
+        <p id="donateDescription"></p>
+    </div>
+	
+	<div id="turkana" class="tab">
+		<h1 id="turkanaTitle"></h1>
+		<p id="turkanaDescription"></p>
+		<iframe id="videoFrame" width="640" height="480" allow="autoplay"></iframe>
+	</div>
+
+
+    <script>
+        let language = navigator.language.startsWith('es') ? 'es' : navigator.language.startsWith('en') ? 'en' : 'eus';
+
+        function setLanguage(lang) {
+            language = lang;
+            renderTexts();
+        }
+
+        function renderTexts() {
+            const texts = {
+                eus: {
+                    campaignTab: 'Gabonetako Kanpaina',
+                    donateTab: 'Eman',
+                    turkanaTab: 'Turkana',
+                    campaignTitle: 'Gabonetako kanpainaren aurrerapena',
+                    campaignDescription: 'Gabonetako kanpainan jasotzen den dirua, Aztivate klinikan analisiak egiteko laborategi bat martxan jartzera eta haurrak egunean 2 bazkari izatera bideratzea. Azken finean, Turkana herriaren bizi iraupenerako izatea. \n\nBehar gaituzte!! \n\nEskerrik asko zuen inplikazioagatik. \n\n“Gauza txikiak dira aldaketa handien erantzuleak” - Paulo Coelho\n\nELKARTASUN TALDEA',
+                    donateTitle: 'Eman',
+                    donateDescription: 'Urtero bezala, laguntza ekonomiko hau bi modutan egitea posible izangoduzue: ikasleek eramango duten sobreetan dirua sartu eta ikastolarabueltatuz edota hurrengo kontu korrontean ingresatuz: ES79 2095 3185 7710 9039 3959',
+                    turkanaTitle: 'Turkana',
+                    turkanaDescription: 'Informazio gehiago nahi izanez gero, bisitatu Pole Pole Olabide-ri buruz: <a href="https://www.olabideikastola.eus/es/blog/pole-pole-olabide"/>',
+                    turkanaVideoTitle: 'Elkartasun Taldearen Bideoa - Gabonak'
+                },
+                es: {
+                    campaignTab: 'Campaña de Navidad',
+                    donateTab: 'Donar',
+                    turkanaTab: 'Turkana',
+                    campaignTitle: 'Progreso de la campaña de Navidad',
+                    campaignDescription: 'El dinero recaudado en la campaña de Navidad se destina a poner en marcha un laboratorio para análisis en la clínica Aztivate y a garantizar que los niños reciban dos comidas al día. En definitiva, para la supervivencia del pueblo de Turkana. \n\n¡Nos necesitan! \n\nGracias por su implicación. \n\n“Las pequeñas cosas son responsables de los grandes cambios” - Paulo Coelho\n\nEQUIPO DE SOLIDARIDAD',
+                    donateTitle: 'Donar',
+                    donateDescription: 'Como cada año, esta ayuda económica se puede realizar de dos maneras: introduciendo el dinero en los sobres que llevarán los estudiantes y devolviéndolos a la escuela o ingresándolo en la siguiente cuenta bancaria: ES79 2095 3185 7710 9039 3959',
+                    turkanaTitle: 'Turkana',
+                    turkanaDescription: 'Para más información sobre Pole Pole Olabide visita: <a href="https://www.olabideikastola.eus/es/blog/pole-pole-olabide"/>',
+                    turkanaVideoTitle: 'Vídeo de Elkartasun Taldea - Navidades'
+                },
+                en: {
+                    campaignTab: 'Christmas Campaign',
+                    donateTab: 'Donate',
+                    turkanaTab: 'Turkana',
+                    campaignTitle: 'Christmas Campaign Progress',
+                    campaignDescription: 'The money collected during the Christmas campaign will be used to set up a laboratory for analysis at the Aztivate clinic and to ensure that children receive two meals a day. Ultimately, it is for the survival of the Turkana people. \n\nThey need us! \n\nThank you for your involvement. \n\n“Small things are responsible for big changes” - Paulo Coelho\n\nSOLIDARITY TEAM',
+                    donateTitle: 'Donate',
+                    donateDescription: 'As every year, this financial support can be made in two ways: by putting money in the envelopes that the students will carry and returning them to the school, or by depositing it in the following bank account: ES79 2095 3185 7710 9039 3959',
+                    turkanaTitle: 'Turkana',
+                    turkanaDescription: 'For more information about Pole Pole Olabide, visit: <a href="https://www.olabideikastola.eus/es/blog/pole-pole-olabide"/>',
+                    turkanaVideoTitle: 'Solidarity Team Video - Christmas'
+                }
+            };
+
+            const selectedTexts = texts[language];
+
+            document.getElementById('campaignTab').innerText = selectedTexts.campaignTab;
+            document.getElementById('donateTab').innerText = selectedTexts.donateTab;
+            document.getElementById('turkanaTab').innerText = selectedTexts.turkanaTab;
+
+            document.getElementById('campaignTitle').innerText = selectedTexts.campaignTitle;
+            document.getElementById('campaignDescription').innerText = selectedTexts.campaignDescription;
+
+            document.getElementById('donateTitle').innerText = selectedTexts.donateTitle;
+            document.getElementById('donateDescription').innerText = selectedTexts.donateDescription;
+
+            document.getElementById('turkanaTitle').innerText = selectedTexts.turkanaTitle;
+            document.getElementById('turkanaDescription').innerText = selectedTexts.turkanaDescription;
+        }
+
+        function showTab(tabId) {
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderTexts();
+
+            async function fetchSpreadsheetData() {
+                try {
+                    const response = await fetch('Kalkulu-orri izengabea.xlsx');
+                    if (!response.ok) throw new Error('Spreadsheet not found');
+
+                    const data = await response.arrayBuffer();
+                    const workbook = XLSX.read(data, { type: 'array' });
+                    const sheet = workbook.Sheets[workbook.SheetNames[0]];
+                    const jsonData = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+
+                    const labels = [];
+                    const primary = [];
+                    const secondary = [];
+                    const bachelor = [];
+                    const cumulative = [];
+                    let total = 0;
+
+                    jsonData.slice(5).forEach(row => {
+                        if (row[1] && row[2] && row[3] && row[4]) {
+                            labels.push(row[1]);
+                            primary.push(Number(row[2]));
+                            secondary.push(Number(row[3]));
+                            bachelor.push(Number(row[4]));
+                            total += Number(row[2]) + Number(row[3]) + Number(row[4]);
+                            cumulative.push(total);
+                        }
+                    });
+
+                    console.log('Data parsed successfully', { labels, primary, secondary, bachelor, cumulative, total });
+                    return { labels, primary, secondary, bachelor, cumulative, total };
+                } catch (error) {
+                    console.error('Error fetching or parsing spreadsheet:', error);
+                }
+            }
+
+            async function fetchConfig() {
+                try {
+                    const response = await fetch('config.json');
+                    if (!response.ok) throw new Error('Config file not found');
+                    return await response.json();
+                } catch (error) {
+                    console.error('Error fetching config file:', error);
+                }
+            }
+
+            async function renderCharts() {
+                const data = await fetchSpreadsheetData();
+                if (!data) return;
+
+                const { labels, primary, secondary, bachelor, cumulative, total } = data;
+                const config = await fetchConfig();
+                if (!config) return;
+
+                const fundingData = {
+                    labels: labels,
+                    datasets: [
+                        { label: 'Primary', data: primary, borderColor: 'blue', fill: false },
+                        { label: 'Secondary', data: secondary, borderColor: 'green', fill: false },
+                        { label: 'Bachelor', data: bachelor, borderColor: 'red', fill: false },
+                        { label: 'Cumulative', data: cumulative, borderColor: 'black', fill: false }
+                    ]
+                };
+
+                const fundingConfig = {
+                    type: 'line',
+                    data: fundingData,
+                    options: {
+                        responsive: true,
+                        plugins: { legend: { position: 'top' } },
+                        scales: {
+                            x: { title: { display: true, text: 'Day of December' } },
+                            y: { title: { display: true, text: 'Funds Collected (€)' } }
+                        }
+                    }
+                };
+
+                const progressData = {
+                    labels: ['Collected', 'Remaining'],
+                    datasets: [
+                        {
+                            label: 'Campaign Progress',
+                            data: [total, config.targetAmount - total],
+                            backgroundColor: ['#4caf50', '#f44336']
+                        }
+                    ]
+                };
+
+                const progressConfig = {
+                    type: 'bar',
+                    data: progressData,
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: { position: 'top' },
+                            tooltip: { callbacks: { label: ctx => `${ctx.label}: €${ctx.raw}` } }
+                        },
+                        scales: {
+                            y: { title: { display: true, text: 'Funds (€)' } } }
+                    }
+                };
+
+                new Chart(document.getElementById('fundingChart'), fundingConfig);
+                new Chart(document.getElementById('progressChart'), progressConfig);
+            }
+
+            async function renderTurkanaVideo() {
+                const config = await fetchConfig();
+                if (config && config.videoURL) {
+                    document.getElementById('videoFrame').src = config.videoURL;
+                }
+            }
+
+            renderCharts();
+            renderTurkanaVideo();
+
+            // Registering the service worker for PWA support
+            if ('serviceWorker' in navigator) {
+                window.addEventListener('load', () => {
+                    navigator.serviceWorker.register('service-worker.js').then(
+                        registration => {
+                            console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                        },
+                        err => {
+                            console.error('ServiceWorker registration failed: ', err);
+                        }
+                    );
+                });
+            }
+        });
+    </script>
+</body>
+</html>
