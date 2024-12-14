@@ -80,6 +80,9 @@
 
     <script>
         let language = navigator.language.startsWith('es') ? 'es' : navigator.language.startsWith('en') ? 'en' : 'eus';
+        let filePath = 'Kalkulu-orri izengabea.xlsx';
+        let data = await fetchSpreadsheetData(filePath);
+
 
         function setLanguage(lang) {
             language = lang;
@@ -151,8 +154,7 @@
 
         async function renderCharts() {
             //const data = await fetchSpreadsheetData();
-            const filePath = 'Kalkulu-orri izengabea.xlsx';
-            const data = await fetchSpreadsheetData(filePath);
+            //const data = await fetchSpreadsheetData(filePath);
             console.log('Data from file:', data);
             if (!data) return;
 
