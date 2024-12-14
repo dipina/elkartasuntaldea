@@ -239,9 +239,10 @@
                         bachelor.push(dbhValue);
 
                         // Calculate cumulative total
+                        totalRow = hhValue + lhValue + dbhValue;
                         total += hhValue + lhValue + dbhValue;
                         console.log(total);
-                        cumulative.push(total);
+                        cumulative.push(totalRow);
                     }
 
                     console.log('Data parsed successfully', { labels, primary, secondary, bachelor, cumulative, total });
