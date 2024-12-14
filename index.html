@@ -91,6 +91,16 @@
             renderCharts();
         }
 
+        async function fetchConfig() {
+            try {
+                const response = await fetch('config.json');
+                if (!response.ok) throw new Error('Config file not found');
+                return await response.json();
+            } catch (error) {
+                console.error('Error fetching config file:', error);
+            }
+        }
+
         async function fetchSpreadsheetData(filePath) {
             try {
                 const response = await fetch(filePath); // Use the provided file path
@@ -402,21 +412,6 @@
                 }
             }
             */
-
-            
-            
-            
-            async function fetchConfig() {
-                try {
-                    const response = await fetch('config.json');
-                    if (!response.ok) throw new Error('Config file not found');
-                    return await response.json();
-                } catch (error) {
-                    console.error('Error fetching config file:', error);
-                }
-            }
-
-            
 
             async function renderTurkanaVideo() {
                 const config = await fetchConfig();
