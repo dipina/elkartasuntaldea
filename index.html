@@ -91,6 +91,70 @@
             renderCharts();
         }
 
+        async function fetchSpreadsheetData(filePath) {
+            try {
+                const response = await fetch(filePath); // Use the provided file path
+                if (!response.ok) throw new Error('Spreadsheet not found');
+
+                const data = await response.arrayBuffer();
+                const workbook = XLSX.read(data, { type: 'array' });
+                const sheet = workbook.Sheets[workbook.SheetNames[0]];
+                const jsonData = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+
+                console.log(jsonData); // For debugging
+
+                // Validate if row 4 contains the expected column headers
+                const headers = jsonData[3];
+                if (!headers || headers.length < 5) {
+                    throw new Error('Invalid spreadsheet format: Missing headers in row 6');
+                }
+
+                // Prepare variables to hold the extracted data
+                const labels = [];
+                const primary = []; // HH
+                const secondary = []; // LH
+                const bachelor = []; // DBH-BATX
+                const cumulative = [];
+                let total = 0;
+
+                // Start parsing from row 5, first one with data for charts, (index 6) onward until we find an empty row
+                console.log("jsondata.length", jsonData.length);
+                for (let i = 4; i < jsonData.length; i++) {
+                    const row = jsonData[i];
+                    console.log(row);
+                    if (!row || row.length < 2 || !row[1]) break; // Stop if we encounter an empty row, with no date and no data
+
+                    // Extract data, cleaning up non-numeric characters like euro signs
+                    const day = row[1].toString().trim();
+                    //const hhValue = parseFloat(row[2]?.toString().replace(/[^\d.-]/g, '') || '0');
+                    const hhValue = parseFloat((row[2] !== undefined ? row[2] : '0').toString().replace(/[^\d.-]/g, '')) || 0;
+                    //const lhValue = parseFloat(row[3]?.toString().replace(/[^\d.-]/g, '') || '0');
+                    const lhValue = parseFloat((row[3] !== undefined ? row[3] : '0').toString().replace(/[^\d.-]/g, '')) || 0;
+                    //const dbhValue = parseFloat(row[4]?.toString().replace(/[^\d.-]/g, '') || '0');
+                    const dbhValue = parseFloat((row[4] !== undefined ? row[4] : '0').toString().replace(/[^\d.-]/g, '')) || 0;
+
+                    // Populate arrays
+                    labels.push(day);
+                    primary.push(hhValue);
+                    secondary.push(lhValue);
+                    bachelor.push(dbhValue);
+
+                    // Calculate cumulative total
+                    const totalRow = hhValue + lhValue + dbhValue;
+                    total += totalRow;
+                    console.log(totalRow);
+                    cumulative.push(total);
+                }
+
+                console.log('Data parsed successfully', { labels, primary, secondary, bachelor, cumulative, total });
+                return { labels, primary, secondary, bachelor, cumulative, total };
+            } catch (error) {
+                console.error('Error fetching or parsing spreadsheet:', error);
+            }
+        }
+
+
+
         function renderTexts() {
             const texts = {
                 eus: {
@@ -341,69 +405,7 @@
 
             
             
-            async function fetchSpreadsheetData(filePath) {
-                try {
-                    const response = await fetch(filePath); // Use the provided file path
-                    if (!response.ok) throw new Error('Spreadsheet not found');
-
-                    const data = await response.arrayBuffer();
-                    const workbook = XLSX.read(data, { type: 'array' });
-                    const sheet = workbook.Sheets[workbook.SheetNames[0]];
-                    const jsonData = XLSX.utils.sheet_to_json(sheet, { header: 1 });
-
-                    console.log(jsonData); // For debugging
-
-                    // Validate if row 4 contains the expected column headers
-                    const headers = jsonData[3];
-                    if (!headers || headers.length < 5) {
-                        throw new Error('Invalid spreadsheet format: Missing headers in row 6');
-                    }
-
-                    // Prepare variables to hold the extracted data
-                    const labels = [];
-                    const primary = []; // HH
-                    const secondary = []; // LH
-                    const bachelor = []; // DBH-BATX
-                    const cumulative = [];
-                    let total = 0;
-
-                    // Start parsing from row 5, first one with data for charts, (index 6) onward until we find an empty row
-                    console.log("jsondata.length", jsonData.length);
-                    for (let i = 4; i < jsonData.length; i++) {
-                        const row = jsonData[i];
-                        console.log(row);
-                        if (!row || row.length < 2 || !row[1]) break; // Stop if we encounter an empty row, with no date and no data
-
-                        // Extract data, cleaning up non-numeric characters like euro signs
-                        const day = row[1].toString().trim();
-                        //const hhValue = parseFloat(row[2]?.toString().replace(/[^\d.-]/g, '') || '0');
-                        const hhValue = parseFloat((row[2] !== undefined ? row[2] : '0').toString().replace(/[^\d.-]/g, '')) || 0;
-                        //const lhValue = parseFloat(row[3]?.toString().replace(/[^\d.-]/g, '') || '0');
-                        const lhValue = parseFloat((row[3] !== undefined ? row[3] : '0').toString().replace(/[^\d.-]/g, '')) || 0;
-                        //const dbhValue = parseFloat(row[4]?.toString().replace(/[^\d.-]/g, '') || '0');
-                        const dbhValue = parseFloat((row[4] !== undefined ? row[4] : '0').toString().replace(/[^\d.-]/g, '')) || 0;
-
-                        // Populate arrays
-                        labels.push(day);
-                        primary.push(hhValue);
-                        secondary.push(lhValue);
-                        bachelor.push(dbhValue);
-
-                        // Calculate cumulative total
-                        const totalRow = hhValue + lhValue + dbhValue;
-                        total += totalRow;
-                        console.log(totalRow);
-                        cumulative.push(total);
-                    }
-
-                    console.log('Data parsed successfully', { labels, primary, secondary, bachelor, cumulative, total });
-                    return { labels, primary, secondary, bachelor, cumulative, total };
-                } catch (error) {
-                    console.error('Error fetching or parsing spreadsheet:', error);
-                }
-            }
-
-
+            
             async function fetchConfig() {
                 try {
                     const response = await fetch('config.json');
