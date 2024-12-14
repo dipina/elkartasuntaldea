@@ -221,13 +221,16 @@
                     for (let i = 4; i < jsonData.length; i++) {
                         const row = jsonData[i];
                         console.log(row);
-                        if (!row || row.length < 5 || !row[1]) break; // Stop if we encounter an empty row
+                        if (!row || row.length < 2 || !row[1]) break; // Stop if we encounter an empty row, with no date and no data
 
                         // Extract data, cleaning up non-numeric characters like euro signs
                         const day = row[1].toString().trim();
-                        const hhValue = parseFloat(row[2]?.toString().replace(/[^\d.-]/g, '') || '0');
-                        const lhValue = parseFloat(row[3]?.toString().replace(/[^\d.-]/g, '') || '0');
-                        const dbhValue = parseFloat(row[4]?.toString().replace(/[^\d.-]/g, '') || '0');
+                        //const hhValue = parseFloat(row[2]?.toString().replace(/[^\d.-]/g, '') || '0');
+                        const hhValue = parseFloat((row[2] !== undefined ? row[2] : '0').toString().replace(/[^\d.-]/g, '')) || 0;
+                        //const lhValue = parseFloat(row[3]?.toString().replace(/[^\d.-]/g, '') || '0');
+                        const lhValue = parseFloat((row[3] !== undefined ? row[3] : '0').toString().replace(/[^\d.-]/g, '')) || 0;
+                        //const dbhValue = parseFloat(row[4]?.toString().replace(/[^\d.-]/g, '') || '0');
+                        const dhValue = parseFloat((row[4] !== undefined ? row[4] : '0').toString().replace(/[^\d.-]/g, '')) || 0;
 
                         // Populate arrays
                         labels.push(day);
