@@ -264,6 +264,7 @@
             }
 
             async function renderCharts() {
+                //const data = await fetchSpreadsheetData();
                 const filePath = 'Kalkulu-orri izengabea.xlsx';
                 const data = await fetchSpreadsheetData(filePath);
                 console.log('Data from file:', data);
@@ -273,54 +274,55 @@
                 const config = await fetchConfig();
                 if (!config) return;
 
-                // Localization for chart labels
-                const translations = {
-                    EN: {
-                        hh: 'Kindergarten (HH)',
-                        lh: 'Primary (LH)',
-                        dbh: 'Secondary (DBH-BATX)',
-                        cumulative: 'Cumulative',
-                        day: 'Day of December',
-                        funds: 'Funds Collected (€)',
-                        collected: 'Collected',
-                        remaining: 'Remaining',
-                        progress: 'Campaign Progress',
-                    },
-                    ES: {
-                        hh: 'Infantil (HH)',
-                        lh: 'Primaria (LH)',
-                        dbh: 'Secundaria (DBH-BATX)',
-                        cumulative: 'Acumulado',
-                        day: 'Día de diciembre',
-                        funds: 'Fondos recaudados (€)',
-                        collected: 'Recaudado',
-                        remaining: 'Restante',
-                        progress: 'Progreso de la campaña',
-                    },
-                    EUS: {
-                        hh: 'Haur Hezkuntza (HH)',
-                        lh: 'Lehen Hezkuntza (LH)',
-                        dbh: 'Bigarren Hezkuntza (DBH-BATX)',
-                        cumulative: 'Metatua',
-                        day: 'Abenduko eguna',
-                        funds: 'Bildutako funtsak (€)',
-                        collected: 'Bildutako',
-                        remaining: 'Gelditzen dena',
-                        progress: 'Kanpainaren aurrerapena',
-                    }
-                };
-
-                const langLabels = translations[language || 'EUS']; // Default to English if language is not set
-
                 const fundingData = {
                     labels: labels,
                     datasets: [
-                        { label: langLabels.hh, data: primary, borderColor: 'blue', fill: false },
-                        { label: langLabels.lh, data: secondary, borderColor: 'green', fill: false },
-                        { label: langLabels.dbh, data: bachelor, borderColor: 'red', fill: false },
-                        { label: langLabels.cumulative, data: cumulative, borderColor: 'black', fill: false }
+                        { label: 'Kindergarden (HH)', data: primary, borderColor: 'blue', fill: false },
+                        { label: 'Primary (LH)', data: secondary, borderColor: 'green', fill: false },
+                        { label: 'Secondary (DBH-BATX)', data: bachelor, borderColor: 'red', fill: false },
+                        { label: 'Cumulative', data: cumulative, borderColor: 'black', fill: false }
                     ]
                 };
+
+                /*
+                const fundingConfig = {
+                    type: 'line',
+                    data: fundingData,
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false, // Allows the chart to resize dynamically
+                        plugins: { 
+                            legend: { 
+                                position: 'bottom', // Move legend below the chart for better smartphone visibility
+                                labels: {
+                                    font: {
+                                        size: 10 // Smaller font for better fit on small screens
+                                    }
+                                }
+                            } 
+                        },
+                        scales: {
+                            x: { 
+                                title: { display: true, text: 'Day of December' },
+                                ticks: {
+                                    maxRotation: 45, // Rotates ticks for better readability
+                                    font: {
+                                        size: 10 // Smaller font size for x-axis labels
+                                    }
+                                }
+                            },
+                            y: { 
+                                title: { display: true, text: 'Funds Collected (€)' },
+                                ticks: {
+                                    font: {
+                                        size: 10 // Smaller font size for y-axis labels
+                                    }
+                                }
+                            }
+                        }
+                    }
+                };
+                */
 
                 const fundingConfig = {
                     type: 'line',
@@ -329,17 +331,18 @@
                         responsive: true,
                         plugins: { legend: { position: 'top' } },
                         scales: {
-                            x: { title: { display: true, text: langLabels.day } },
-                            y: { title: { display: true, text: langLabels.funds } }
+                            x: { title: { display: true, text: 'Day of December' } },
+                            y: { title: { display: true, text: 'Funds Collected (€)' } }
                         }
                     }
                 };
+                
 
                 const progressData = {
-                    labels: [langLabels.collected, langLabels.remaining],
+                    labels: ['Collected', 'Remaining'],
                     datasets: [
                         {
-                            label: langLabels.progress,
+                            label: 'Campaign Progress',
                             data: [total, config.targetAmount - total],
                             backgroundColor: ['#4caf50', '#f44336']
                         }
@@ -356,15 +359,13 @@
                             tooltip: { callbacks: { label: ctx => `${ctx.label}: €${ctx.raw}` } }
                         },
                         scales: {
-                            y: { title: { display: true, text: langLabels.funds } }
-                        }
+                            y: { title: { display: true, text: 'Funds (€)' } } }
                     }
                 };
 
                 new Chart(document.getElementById('fundingChart'), fundingConfig);
                 new Chart(document.getElementById('progressChart'), progressConfig);
             }
-
 
             async function renderTurkanaVideo() {
                 const config = await fetchConfig();
