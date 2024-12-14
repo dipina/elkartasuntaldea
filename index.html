@@ -202,8 +202,8 @@
 
                     console.log(jsonData); // For debugging
 
-                    // Validate if row 6 contains the expected column headers
-                    const headers = jsonData[5];
+                    // Validate if row 4 contains the expected column headers
+                    const headers = jsonData[3];
                     if (!headers || headers.length < 5) {
                         throw new Error('Invalid spreadsheet format: Missing headers in row 6');
                     }
@@ -216,7 +216,7 @@
                     const cumulative = [];
                     let total = 0;
 
-                    // Start parsing from row 3 (index 6) onward until we find an empty row
+                    // Start parsing from row 3, first one with data for charts, (index 6) onward until we find an empty row
                     for (let i = 3; i < jsonData.length; i++) {
                         const row = jsonData[i];
                         console.log(row);
