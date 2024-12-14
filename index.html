@@ -84,6 +84,7 @@
         function setLanguage(lang) {
             language = lang;
             renderTexts();
+            renderCharts();
         }
 
         function renderTexts() {
@@ -277,7 +278,7 @@
 
                 // Localization for chart labels
                 const translations = {
-                    EN: {
+                    en: {
                         hh: 'Kindergarten (HH)',
                         lh: 'Primary (LH)',
                         dbh: 'Secondary (DBH-BATX)',
@@ -288,7 +289,7 @@
                         remaining: 'Remaining',
                         progress: 'Campaign Progress',
                     },
-                    ES: {
+                    es: {
                         hh: 'Infantil (HH)',
                         lh: 'Primaria (LH)',
                         dbh: 'Secundaria (DBH-BATX)',
@@ -299,7 +300,7 @@
                         remaining: 'Restante',
                         progress: 'Progreso de la campaña',
                     },
-                    EUS: {
+                    eus: {
                         hh: 'Haur Hezkuntza (HH)',
                         lh: 'Lehen Hezkuntza (LH)',
                         dbh: 'Bigarren Hezkuntza (DBH-BATX)',
@@ -312,7 +313,7 @@
                     }
                 };
 
-                const langLabels = translations[language.toUpperCase() || 'EUS']; // Default to Basque if language is not set
+                const langLabels = translations[language || 'eus']; // Default to Basque if language is not set
 
 
                 const fundingData = {
@@ -380,7 +381,7 @@
                 
 
                 const progressData = {
-                    labels: ['Collected', 'Remaining'],
+                    labels: [langLabels.collected, langLabels.remaining],
                     datasets: [
                         {
                             label: langLabels.progress,
