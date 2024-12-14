@@ -274,13 +274,54 @@
                 const config = await fetchConfig();
                 if (!config) return;
 
+
+                // Localization for chart labels
+                const translations = {
+                    EN: {
+                        hh: 'Kindergarten (HH)',
+                        lh: 'Primary (LH)',
+                        dbh: 'Secondary (DBH-BATX)',
+                        cumulative: 'Cumulative',
+                        day: 'Day of December',
+                        funds: 'Funds Collected (€)',
+                        collected: 'Collected',
+                        remaining: 'Remaining',
+                        progress: 'Campaign Progress',
+                    },
+                    ES: {
+                        hh: 'Infantil (HH)',
+                        lh: 'Primaria (LH)',
+                        dbh: 'Secundaria (DBH-BATX)',
+                        cumulative: 'Acumulado',
+                        day: 'Día de diciembre',
+                        funds: 'Fondos recaudados (€)',
+                        collected: 'Recaudado',
+                        remaining: 'Restante',
+                        progress: 'Progreso de la campaña',
+                    },
+                    EUS: {
+                        hh: 'Haur Hezkuntza (HH)',
+                        lh: 'Lehen Hezkuntza (LH)',
+                        dbh: 'Bigarren Hezkuntza (DBH-BATX)',
+                        cumulative: 'Metatua',
+                        day: 'Abenduko eguna',
+                        funds: 'Bildutako funtsak (€)',
+                        collected: 'Bildutako',
+                        remaining: 'Gelditzen dena',
+                        progress: 'Kanpainaren aurrerapena',
+                    }
+                };
+
+                const langLabels = translations[language.toUpperCase() || 'EUS']; // Default to Basque if language is not set
+
+
                 const fundingData = {
                     labels: labels,
                     datasets: [
-                        { label: 'Kindergarden (HH)', data: primary, borderColor: 'blue', fill: false },
-                        { label: 'Primary (LH)', data: secondary, borderColor: 'green', fill: false },
-                        { label: 'Secondary (DBH-BATX)', data: bachelor, borderColor: 'red', fill: false },
-                        { label: 'Cumulative', data: cumulative, borderColor: 'black', fill: false }
+                        { label: langLabels.hh, data: primary, borderColor: 'blue', fill: false },
+                        { label: langLabels.lh, data: secondary, borderColor: 'green', fill: false },
+                        { label: langLabels.dbh, data: bachelor, borderColor: 'red', fill: false },
+                        { label: langLabels.cumulative, data: cumulative, borderColor: 'black', fill: false }
                     ]
                 };
 
@@ -331,8 +372,8 @@
                         responsive: true,
                         plugins: { legend: { position: 'top' } },
                         scales: {
-                            x: { title: { display: true, text: 'Day of December' } },
-                            y: { title: { display: true, text: 'Funds Collected (€)' } }
+                            x: { title: { display: true, text: langLabels.day } },
+                            y: { title: { display: true, text: langLabels.funds } }
                         }
                     }
                 };
@@ -342,7 +383,7 @@
                     labels: ['Collected', 'Remaining'],
                     datasets: [
                         {
-                            label: 'Campaign Progress',
+                            label: langLabels.progress,
                             data: [total, config.targetAmount - total],
                             backgroundColor: ['#4caf50', '#f44336']
                         }
@@ -359,7 +400,7 @@
                             tooltip: { callbacks: { label: ctx => `${ctx.label}: €${ctx.raw}` } }
                         },
                         scales: {
-                            y: { title: { display: true, text: 'Funds (€)' } } }
+                            y: { title: { display: true, text: langLabels.funds } } }
                     }
                 };
 
