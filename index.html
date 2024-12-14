@@ -81,7 +81,7 @@
     <script>
         let language = navigator.language.startsWith('es') ? 'es' : navigator.language.startsWith('en') ? 'en' : 'eus';
         let filePath = 'Kalkulu-orri izengabea.xlsx';
-        let data = await fetchSpreadsheetData(filePath);
+        let data = fetchSpreadsheetData(filePath);
 
 
         function setLanguage(lang) {
