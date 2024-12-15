@@ -160,6 +160,7 @@
             selectedTexts = texts[language];
             console.log("language changed to: ", language);
             renderTexts();
+            renderCharts();
         }
 
         function renderTexts() {
@@ -176,9 +177,6 @@
 
             document.getElementById('turkanaTitle').innerText = selectedTexts.turkanaTitle;
             document.getElementById('turkanaDescription').innerHTML = selectedTexts.turkanaDescription;
-
-            renderCharts(); // Pass localized labels to renderCharts
-a
         }
 
         function showTab(tabId) {
