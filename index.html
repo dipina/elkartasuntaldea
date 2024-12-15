@@ -160,7 +160,7 @@
         function setLanguage(lang) {
             language = lang;
             selectedTexts = texts[language];
-            console.log("language changed to: ", language);
+            //console.log("language changed to: ", language);
             renderTexts();
             renderCharts();
         }
@@ -231,54 +231,12 @@
             const filePath = 'Kalkulu-orri izengabea.xlsx';
             const data = await fetchSpreadsheetData(filePath);
             let langLabels = selectedTexts.chartLabels;
-            console.log('Data from file:', data);
+            //console.log('Data from file:', data);
             if (!data) return;
 
             const { labels, primary, secondary, bachelor, cumulative, total } = data;
             const config = await fetchConfig();
             if (!config) return;
-
-            /*
-            // Localization for chart labels
-            const translations = {
-                en: {
-                    hh: 'Kindergarten (HH)',
-                    lh: 'Primary (LH)',
-                    dbh: 'Secondary (DBH-BATX)',
-                    cumulative: 'Cumulative',
-                    day: 'Day of December',
-                    funds: 'Funds Collected (€)',
-                    collected: 'Collected',
-                    remaining: 'Remaining',
-                    progress: 'Campaign Progress',
-                },
-                es: {
-                    hh: 'Infantil (HH)',
-                    lh: 'Primaria (LH)',
-                    dbh: 'Secundaria (DBH-BATX)',
-                    cumulative: 'Acumulado',
-                    day: 'Día de diciembre',
-                    funds: 'Fondos recaudados (€)',
-                    collected: 'Recaudado',
-                    remaining: 'Restante',
-                    progress: 'Progreso de la campaña',
-                },
-                eus: {
-                    hh: 'Haur Hezkuntza (HH)',
-                    lh: 'Lehen Hezkuntza (LH)',
-                    dbh: 'Bigarren Hezkuntza (DBH-BATX)',
-                    cumulative: 'Metatua',
-                    day: 'Abenduko eguna',
-                    funds: 'Bildutako funtsak (€)',
-                    collected: 'Bildutako',
-                    remaining: 'Gelditzen dena',
-                    progress: 'Kanpainaren aurrerapena',
-                }
-            };
-
-            const langLabels = translations[language || 'eus']; // Default to Basque if language is not set
-            console.log(language, langLabels);
-            */
 
             const fundingData = {
                 labels: labels,
@@ -289,46 +247,6 @@
                     { label: langLabels.cumulative, data: cumulative, borderColor: 'black', fill: false }
                 ]
             };
-
-            /*
-            const fundingConfig = {
-                type: 'line',
-                data: fundingData,
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false, // Allows the chart to resize dynamically
-                    plugins: { 
-                        legend: { 
-                            position: 'bottom', // Move legend below the chart for better smartphone visibility
-                            labels: {
-                                font: {
-                                    size: 10 // Smaller font for better fit on small screens
-                                }
-                            }
-                        } 
-                    },
-                    scales: {
-                        x: { 
-                            title: { display: true, text: 'Day of December' },
-                            ticks: {
-                                maxRotation: 45, // Rotates ticks for better readability
-                                font: {
-                                    size: 10 // Smaller font size for x-axis labels
-                                }
-                            }
-                        },
-                        y: { 
-                            title: { display: true, text: 'Funds Collected (€)' },
-                            ticks: {
-                                font: {
-                                    size: 10 // Smaller font size for y-axis labels
-                                }
-                            }
-                        }
-                    }
-                }
-            };
-            */
 
             const fundingConfig = {
                 type: 'line',
@@ -354,39 +272,6 @@
                     }
                 ]
             };
-
-            /*
-            const progressConfig = {
-                type: 'bar',
-                data: progressData,
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: { position: 'top' },
-                        tooltip: { callbacks: { label: ctx => `${ctx.label}: €${ctx.raw}` } }
-                    },
-                    scales: {
-                        y: { title: { display: true, text: langLabels.funds } } }
-                }
-            };
-            
-
-            const progressConfig = {
-                type: 'doughnut', // Changed from 'bar' to 'doughnut'
-                data: progressData,
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: { position: 'top' },
-                        tooltip: {
-                            callbacks: {
-                                label: ctx => `${ctx.label}: €${ctx.raw} (${((ctx.raw / config.targetAmount) * 100).toFixed(1)}%)`
-                            }
-                        }
-                    }
-                }
-            };
-            */
 
             const progressConfig = {
                 type: 'doughnut', // Doughnut chart type
@@ -452,7 +337,7 @@
                 const sheet = workbook.Sheets[workbook.SheetNames[0]];
                 const jsonData = XLSX.utils.sheet_to_json(sheet, { header: 1 });
 
-                console.log(jsonData); // For debugging
+                //console.log(jsonData); // For debugging
 
                 // Validate if row 4 contains the expected column headers
                 const headers = jsonData[3];
@@ -469,10 +354,10 @@
                 let total = 0;
 
                 // Start parsing from row 5, first one with data for charts, (index 6) onward until we find an empty row
-                console.log("jsondata.length", jsonData.length);
+                //console.log("jsondata.length", jsonData.length);
                 for (let i = 4; i < jsonData.length; i++) {
                     const row = jsonData[i];
-                    console.log(row);
+                    //console.log(row);
                     if (!row || row.length < 2 || !row[1]) break; // Stop if we encounter an empty row, with no date and no data
 
                     // Extract data, cleaning up non-numeric characters like euro signs
@@ -493,11 +378,11 @@
                     // Calculate cumulative total
                     const totalRow = hhValue + lhValue + dbhValue;
                     total += totalRow;
-                    console.log(totalRow);
+                    //console.log(totalRow);
                     cumulative.push(total);
                 }
 
-                console.log('Data parsed successfully', { labels, primary, secondary, bachelor, cumulative, total });
+                //console.log('Data parsed successfully', { labels, primary, secondary, bachelor, cumulative, total });
                 return { labels, primary, secondary, bachelor, cumulative, total };
             } catch (error) {
                 console.error('Error fetching or parsing spreadsheet:', error);
@@ -514,8 +399,6 @@
                 console.error('Error fetching config file:', error);
             }
         }
-
-        
 
         async function renderTurkanaVideo() {
             const config = await fetchConfig();
