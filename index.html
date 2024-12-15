@@ -155,15 +155,14 @@
 
         let selectedTexts = texts[language];
 
-
         function setLanguage(lang) {
             language = lang;
             selectedTexts = texts[language];
             console.log("language changed to: ", language);
-            renderTexts(selectedTexts);
+            renderTexts();
         }
 
-        function renderTexts(selectedTexts) {
+        function renderTexts() {
             
             document.getElementById('campaignTab').innerText = selectedTexts.campaignTab;
             document.getElementById('donateTab').innerText = selectedTexts.donateTab;
@@ -178,8 +177,8 @@
             document.getElementById('turkanaTitle').innerText = selectedTexts.turkanaTitle;
             document.getElementById('turkanaDescription').innerHTML = selectedTexts.turkanaDescription;
 
-            renderCharts(selectedTexts.chartLabels); // Pass localized labels to renderCharts
-
+            renderCharts(); // Pass localized labels to renderCharts
+a
         }
 
         function showTab(tabId) {
@@ -187,320 +186,321 @@
             document.getElementById(tabId).classList.add('active');
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            renderTexts(selectedTexts);
+                    /*
+        async function fetchSpreadsheetData() {
+            try {
+                const response = await fetch('Kalkulu-orri izengabea.xlsx');
+                if (!response.ok) throw new Error('Spreadsheet not found');
 
-            /*
-            async function fetchSpreadsheetData() {
-                try {
-                    const response = await fetch('Kalkulu-orri izengabea.xlsx');
-                    if (!response.ok) throw new Error('Spreadsheet not found');
+                const data = await response.arrayBuffer();
+                const workbook = XLSX.read(data, { type: 'array' });
+                const sheet = workbook.Sheets[workbook.SheetNames[0]];
+                const jsonData = XLSX.utils.sheet_to_json(sheet, { header: 1 });
 
-                    const data = await response.arrayBuffer();
-                    const workbook = XLSX.read(data, { type: 'array' });
-                    const sheet = workbook.Sheets[workbook.SheetNames[0]];
-                    const jsonData = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+                console.log(jsonData);
 
-                    console.log(jsonData);
+                const labels = [];
+                const primary = [];
+                const secondary = [];
+                const bachelor = [];
+                const cumulative = [];
+                let total = 0;
 
-                    const labels = [];
-                    const primary = [];
-                    const secondary = [];
-                    const bachelor = [];
-                    const cumulative = [];
-                    let total = 0;
-
-                    jsonData.slice(5).forEach(row => {
-                        console.log(row);
-                        if (row[1] && row[2] && row[3] && row[4]) {
-                            labels.push(row[1]);
-                            primary.push(Number(row[2]));
-                            secondary.push(Number(row[3]));
-                            bachelor.push(Number(row[4]));
-                            total += Number(row[2]) + Number(row[3]) + Number(row[4]);
-                            cumulative.push(total);
-                        }
-                    });
-
-                    console.log('Data parsed successfully', { labels, primary, secondary, bachelor, cumulative, total });
-                    return { labels, primary, secondary, bachelor, cumulative, total };
-                } catch (error) {
-                    console.error('Error fetching or parsing spreadsheet:', error);
-                }
-            }
-            */
-
-            async function renderCharts(langLabels) {
-                //const data = await fetchSpreadsheetData();
-                const filePath = 'Kalkulu-orri izengabea.xlsx';
-                const data = await fetchSpreadsheetData(filePath);
-                console.log('Data from file:', data);
-                if (!data) return;
-
-                const { labels, primary, secondary, bachelor, cumulative, total } = data;
-                const config = await fetchConfig();
-                if (!config) return;
-
-                /*
-                // Localization for chart labels
-                const translations = {
-                    en: {
-                        hh: 'Kindergarten (HH)',
-                        lh: 'Primary (LH)',
-                        dbh: 'Secondary (DBH-BATX)',
-                        cumulative: 'Cumulative',
-                        day: 'Day of December',
-                        funds: 'Funds Collected (€)',
-                        collected: 'Collected',
-                        remaining: 'Remaining',
-                        progress: 'Campaign Progress',
-                    },
-                    es: {
-                        hh: 'Infantil (HH)',
-                        lh: 'Primaria (LH)',
-                        dbh: 'Secundaria (DBH-BATX)',
-                        cumulative: 'Acumulado',
-                        day: 'Día de diciembre',
-                        funds: 'Fondos recaudados (€)',
-                        collected: 'Recaudado',
-                        remaining: 'Restante',
-                        progress: 'Progreso de la campaña',
-                    },
-                    eus: {
-                        hh: 'Haur Hezkuntza (HH)',
-                        lh: 'Lehen Hezkuntza (LH)',
-                        dbh: 'Bigarren Hezkuntza (DBH-BATX)',
-                        cumulative: 'Metatua',
-                        day: 'Abenduko eguna',
-                        funds: 'Bildutako funtsak (€)',
-                        collected: 'Bildutako',
-                        remaining: 'Gelditzen dena',
-                        progress: 'Kanpainaren aurrerapena',
-                    }
-                };
-
-                const langLabels = translations[language || 'eus']; // Default to Basque if language is not set
-                console.log(language, langLabels);
-                */
-
-                const fundingData = {
-                    labels: labels,
-                    datasets: [
-                        { label: langLabels.hh, data: primary, borderColor: 'blue', fill: false },
-                        { label: langLabels.lh, data: secondary, borderColor: 'green', fill: false },
-                        { label: langLabels.dbh, data: bachelor, borderColor: 'red', fill: false },
-                        { label: langLabels.cumulative, data: cumulative, borderColor: 'black', fill: false }
-                    ]
-                };
-
-                /*
-                const fundingConfig = {
-                    type: 'line',
-                    data: fundingData,
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false, // Allows the chart to resize dynamically
-                        plugins: { 
-                            legend: { 
-                                position: 'bottom', // Move legend below the chart for better smartphone visibility
-                                labels: {
-                                    font: {
-                                        size: 10 // Smaller font for better fit on small screens
-                                    }
-                                }
-                            } 
-                        },
-                        scales: {
-                            x: { 
-                                title: { display: true, text: 'Day of December' },
-                                ticks: {
-                                    maxRotation: 45, // Rotates ticks for better readability
-                                    font: {
-                                        size: 10 // Smaller font size for x-axis labels
-                                    }
-                                }
-                            },
-                            y: { 
-                                title: { display: true, text: 'Funds Collected (€)' },
-                                ticks: {
-                                    font: {
-                                        size: 10 // Smaller font size for y-axis labels
-                                    }
-                                }
-                            }
-                        }
-                    }
-                };
-                */
-
-                const fundingConfig = {
-                    type: 'line',
-                    data: fundingData,
-                    options: {
-                        responsive: true,
-                        plugins: { legend: { position: 'top' } },
-                        scales: {
-                            x: { title: { display: true, text: langLabels.day } },
-                            y: { title: { display: true, text: langLabels.funds } }
-                        }
-                    }
-                };
-                
-
-                const progressData = {
-                    labels: [langLabels.collected, langLabels.remaining],
-                    datasets: [
-                        {
-                            label: langLabels.progress,
-                            data: [total, config.targetAmount - total],
-                            backgroundColor: ['#4caf50', '#f44336']
-                        }
-                    ]
-                };
-
-                /*
-                const progressConfig = {
-                    type: 'bar',
-                    data: progressData,
-                    options: {
-                        responsive: true,
-                        plugins: {
-                            legend: { position: 'top' },
-                            tooltip: { callbacks: { label: ctx => `${ctx.label}: €${ctx.raw}` } }
-                        },
-                        scales: {
-                            y: { title: { display: true, text: langLabels.funds } } }
-                    }
-                };
-                
-
-                const progressConfig = {
-                    type: 'doughnut', // Changed from 'bar' to 'doughnut'
-                    data: progressData,
-                    options: {
-                        responsive: true,
-                        plugins: {
-                            legend: { position: 'top' },
-                            tooltip: {
-                                callbacks: {
-                                    label: ctx => `${ctx.label}: €${ctx.raw} (${((ctx.raw / config.targetAmount) * 100).toFixed(1)}%)`
-                                }
-                            }
-                        }
-                    }
-                };
-                */
-
-                const progressConfig = {
-                    type: 'doughnut', // Doughnut chart type
-                    data: progressData,
-                    options: {
-                        responsive: true,
-                        plugins: {
-                            legend: { position: 'top' },
-                            tooltip: {
-                                callbacks: {
-                                    label: function (ctx) {
-                                        const localizedLabel = ctx.dataset.label || chartLabels.progress;
-                                        const value = ctx.raw || 0;
-                                        const percentage = ((value / config.targetAmount) * 100).toFixed(1);
-                                        return `${localizedLabel} - ${ctx.label || chartLabels[ctx.label.toLowerCase()]}: €${value} (${percentage}%)`;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                };
-
-
-
-                new Chart(document.getElementById('fundingChart'), fundingConfig);
-                new Chart(document.getElementById('progressChart'), progressConfig);
-            }
-            
-            async function fetchSpreadsheetData(filePath) {
-                try {
-                    const response = await fetch(filePath); // Use the provided file path
-                    if (!response.ok) throw new Error('Spreadsheet not found');
-
-                    const data = await response.arrayBuffer();
-                    const workbook = XLSX.read(data, { type: 'array' });
-                    const sheet = workbook.Sheets[workbook.SheetNames[0]];
-                    const jsonData = XLSX.utils.sheet_to_json(sheet, { header: 1 });
-
-                    console.log(jsonData); // For debugging
-
-                    // Validate if row 4 contains the expected column headers
-                    const headers = jsonData[3];
-                    if (!headers || headers.length < 5) {
-                        throw new Error('Invalid spreadsheet format: Missing headers in row 6');
-                    }
-
-                    // Prepare variables to hold the extracted data
-                    const labels = [];
-                    const primary = []; // HH
-                    const secondary = []; // LH
-                    const bachelor = []; // DBH-BATX
-                    const cumulative = [];
-                    let total = 0;
-
-                    // Start parsing from row 5, first one with data for charts, (index 6) onward until we find an empty row
-                    console.log("jsondata.length", jsonData.length);
-                    for (let i = 4; i < jsonData.length; i++) {
-                        const row = jsonData[i];
-                        console.log(row);
-                        if (!row || row.length < 2 || !row[1]) break; // Stop if we encounter an empty row, with no date and no data
-
-                        // Extract data, cleaning up non-numeric characters like euro signs
-                        const day = row[1].toString().trim();
-                        //const hhValue = parseFloat(row[2]?.toString().replace(/[^\d.-]/g, '') || '0');
-                        const hhValue = parseFloat((row[2] !== undefined ? row[2] : '0').toString().replace(/[^\d.-]/g, '')) || 0;
-                        //const lhValue = parseFloat(row[3]?.toString().replace(/[^\d.-]/g, '') || '0');
-                        const lhValue = parseFloat((row[3] !== undefined ? row[3] : '0').toString().replace(/[^\d.-]/g, '')) || 0;
-                        //const dbhValue = parseFloat(row[4]?.toString().replace(/[^\d.-]/g, '') || '0');
-                        const dbhValue = parseFloat((row[4] !== undefined ? row[4] : '0').toString().replace(/[^\d.-]/g, '')) || 0;
-
-                        // Populate arrays
-                        labels.push(day);
-                        primary.push(hhValue);
-                        secondary.push(lhValue);
-                        bachelor.push(dbhValue);
-
-                        // Calculate cumulative total
-                        const totalRow = hhValue + lhValue + dbhValue;
-                        total += totalRow;
-                        console.log(totalRow);
+                jsonData.slice(5).forEach(row => {
+                    console.log(row);
+                    if (row[1] && row[2] && row[3] && row[4]) {
+                        labels.push(row[1]);
+                        primary.push(Number(row[2]));
+                        secondary.push(Number(row[3]));
+                        bachelor.push(Number(row[4]));
+                        total += Number(row[2]) + Number(row[3]) + Number(row[4]);
                         cumulative.push(total);
                     }
+                });
 
-                    console.log('Data parsed successfully', { labels, primary, secondary, bachelor, cumulative, total });
-                    return { labels, primary, secondary, bachelor, cumulative, total };
-                } catch (error) {
-                    console.error('Error fetching or parsing spreadsheet:', error);
-                }
+                console.log('Data parsed successfully', { labels, primary, secondary, bachelor, cumulative, total });
+                return { labels, primary, secondary, bachelor, cumulative, total };
+            } catch (error) {
+                console.error('Error fetching or parsing spreadsheet:', error);
             }
+        }
+        */
 
+        async function renderCharts() {
+            //const data = await fetchSpreadsheetData();
+            const filePath = 'Kalkulu-orri izengabea.xlsx';
+            const data = await fetchSpreadsheetData(filePath);
+            const langLabels = selectedTexts.chartLabels;
+            console.log('Data from file:', data);
+            if (!data) return;
 
-            async function fetchConfig() {
-                try {
-                    const response = await fetch('config.json');
-                    if (!response.ok) throw new Error('Config file not found');
-                    return await response.json();
-                } catch (error) {
-                    console.error('Error fetching config file:', error);
+            const { labels, primary, secondary, bachelor, cumulative, total } = data;
+            const config = await fetchConfig();
+            if (!config) return;
+
+            /*
+            // Localization for chart labels
+            const translations = {
+                en: {
+                    hh: 'Kindergarten (HH)',
+                    lh: 'Primary (LH)',
+                    dbh: 'Secondary (DBH-BATX)',
+                    cumulative: 'Cumulative',
+                    day: 'Day of December',
+                    funds: 'Funds Collected (€)',
+                    collected: 'Collected',
+                    remaining: 'Remaining',
+                    progress: 'Campaign Progress',
+                },
+                es: {
+                    hh: 'Infantil (HH)',
+                    lh: 'Primaria (LH)',
+                    dbh: 'Secundaria (DBH-BATX)',
+                    cumulative: 'Acumulado',
+                    day: 'Día de diciembre',
+                    funds: 'Fondos recaudados (€)',
+                    collected: 'Recaudado',
+                    remaining: 'Restante',
+                    progress: 'Progreso de la campaña',
+                },
+                eus: {
+                    hh: 'Haur Hezkuntza (HH)',
+                    lh: 'Lehen Hezkuntza (LH)',
+                    dbh: 'Bigarren Hezkuntza (DBH-BATX)',
+                    cumulative: 'Metatua',
+                    day: 'Abenduko eguna',
+                    funds: 'Bildutako funtsak (€)',
+                    collected: 'Bildutako',
+                    remaining: 'Gelditzen dena',
+                    progress: 'Kanpainaren aurrerapena',
                 }
-            }
+            };
 
+            const langLabels = translations[language || 'eus']; // Default to Basque if language is not set
+            console.log(language, langLabels);
+            */
+
+            const fundingData = {
+                labels: labels,
+                datasets: [
+                    { label: langLabels.hh, data: primary, borderColor: 'blue', fill: false },
+                    { label: langLabels.lh, data: secondary, borderColor: 'green', fill: false },
+                    { label: langLabels.dbh, data: bachelor, borderColor: 'red', fill: false },
+                    { label: langLabels.cumulative, data: cumulative, borderColor: 'black', fill: false }
+                ]
+            };
+
+            /*
+            const fundingConfig = {
+                type: 'line',
+                data: fundingData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false, // Allows the chart to resize dynamically
+                    plugins: { 
+                        legend: { 
+                            position: 'bottom', // Move legend below the chart for better smartphone visibility
+                            labels: {
+                                font: {
+                                    size: 10 // Smaller font for better fit on small screens
+                                }
+                            }
+                        } 
+                    },
+                    scales: {
+                        x: { 
+                            title: { display: true, text: 'Day of December' },
+                            ticks: {
+                                maxRotation: 45, // Rotates ticks for better readability
+                                font: {
+                                    size: 10 // Smaller font size for x-axis labels
+                                }
+                            }
+                        },
+                        y: { 
+                            title: { display: true, text: 'Funds Collected (€)' },
+                            ticks: {
+                                font: {
+                                    size: 10 // Smaller font size for y-axis labels
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+            */
+
+            const fundingConfig = {
+                type: 'line',
+                data: fundingData,
+                options: {
+                    responsive: true,
+                    plugins: { legend: { position: 'top' } },
+                    scales: {
+                        x: { title: { display: true, text: langLabels.day } },
+                        y: { title: { display: true, text: langLabels.funds } }
+                    }
+                }
+            };
             
 
-            async function renderTurkanaVideo() {
-                const config = await fetchConfig();
-                if (config && config.videoURL) {
-                    document.getElementById('videoFrame').src = config.videoURL;
-                }
-            }
+            const progressData = {
+                labels: [langLabels.collected, langLabels.remaining],
+                datasets: [
+                    {
+                        label: langLabels.progress,
+                        data: [total, config.targetAmount - total],
+                        backgroundColor: ['#4caf50', '#f44336']
+                    }
+                ]
+            };
 
-            renderCharts(selectedTexts.chartLabels);
+            /*
+            const progressConfig = {
+                type: 'bar',
+                data: progressData,
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { position: 'top' },
+                        tooltip: { callbacks: { label: ctx => `${ctx.label}: €${ctx.raw}` } }
+                    },
+                    scales: {
+                        y: { title: { display: true, text: langLabels.funds } } }
+                }
+            };
+            
+
+            const progressConfig = {
+                type: 'doughnut', // Changed from 'bar' to 'doughnut'
+                data: progressData,
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { position: 'top' },
+                        tooltip: {
+                            callbacks: {
+                                label: ctx => `${ctx.label}: €${ctx.raw} (${((ctx.raw / config.targetAmount) * 100).toFixed(1)}%)`
+                            }
+                        }
+                    }
+                }
+            };
+            */
+
+            const progressConfig = {
+                type: 'doughnut', // Doughnut chart type
+                data: progressData,
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { position: 'top' },
+                        tooltip: {
+                            callbacks: {
+                                label: function (ctx) {
+                                    const localizedLabel = ctx.dataset.label || chartLabels.progress;
+                                    const value = ctx.raw || 0;
+                                    const percentage = ((value / config.targetAmount) * 100).toFixed(1);
+                                    return `${localizedLabel} - ${ctx.label || chartLabels[ctx.label.toLowerCase()]}: €${value} (${percentage}%)`;
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+
+
+
+            new Chart(document.getElementById('fundingChart'), fundingConfig);
+            new Chart(document.getElementById('progressChart'), progressConfig);
+        }
+        
+        async function fetchSpreadsheetData(filePath) {
+            try {
+                const response = await fetch(filePath); // Use the provided file path
+                if (!response.ok) throw new Error('Spreadsheet not found');
+
+                const data = await response.arrayBuffer();
+                const workbook = XLSX.read(data, { type: 'array' });
+                const sheet = workbook.Sheets[workbook.SheetNames[0]];
+                const jsonData = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+
+                console.log(jsonData); // For debugging
+
+                // Validate if row 4 contains the expected column headers
+                const headers = jsonData[3];
+                if (!headers || headers.length < 5) {
+                    throw new Error('Invalid spreadsheet format: Missing headers in row 6');
+                }
+
+                // Prepare variables to hold the extracted data
+                const labels = [];
+                const primary = []; // HH
+                const secondary = []; // LH
+                const bachelor = []; // DBH-BATX
+                const cumulative = [];
+                let total = 0;
+
+                // Start parsing from row 5, first one with data for charts, (index 6) onward until we find an empty row
+                console.log("jsondata.length", jsonData.length);
+                for (let i = 4; i < jsonData.length; i++) {
+                    const row = jsonData[i];
+                    console.log(row);
+                    if (!row || row.length < 2 || !row[1]) break; // Stop if we encounter an empty row, with no date and no data
+
+                    // Extract data, cleaning up non-numeric characters like euro signs
+                    const day = row[1].toString().trim();
+                    //const hhValue = parseFloat(row[2]?.toString().replace(/[^\d.-]/g, '') || '0');
+                    const hhValue = parseFloat((row[2] !== undefined ? row[2] : '0').toString().replace(/[^\d.-]/g, '')) || 0;
+                    //const lhValue = parseFloat(row[3]?.toString().replace(/[^\d.-]/g, '') || '0');
+                    const lhValue = parseFloat((row[3] !== undefined ? row[3] : '0').toString().replace(/[^\d.-]/g, '')) || 0;
+                    //const dbhValue = parseFloat(row[4]?.toString().replace(/[^\d.-]/g, '') || '0');
+                    const dbhValue = parseFloat((row[4] !== undefined ? row[4] : '0').toString().replace(/[^\d.-]/g, '')) || 0;
+
+                    // Populate arrays
+                    labels.push(day);
+                    primary.push(hhValue);
+                    secondary.push(lhValue);
+                    bachelor.push(dbhValue);
+
+                    // Calculate cumulative total
+                    const totalRow = hhValue + lhValue + dbhValue;
+                    total += totalRow;
+                    console.log(totalRow);
+                    cumulative.push(total);
+                }
+
+                console.log('Data parsed successfully', { labels, primary, secondary, bachelor, cumulative, total });
+                return { labels, primary, secondary, bachelor, cumulative, total };
+            } catch (error) {
+                console.error('Error fetching or parsing spreadsheet:', error);
+            }
+        }
+
+
+        async function fetchConfig() {
+            try {
+                const response = await fetch('config.json');
+                if (!response.ok) throw new Error('Config file not found');
+                return await response.json();
+            } catch (error) {
+                console.error('Error fetching config file:', error);
+            }
+        }
+
+        
+
+        async function renderTurkanaVideo() {
+            const config = await fetchConfig();
+            if (config && config.videoURL) {
+                document.getElementById('videoFrame').src = config.videoURL;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            selectedTexts = texts[language];
+            renderTexts();
+            renderCharts();
             renderTurkanaVideo();
 
             // Registering the service worker for PWA support
