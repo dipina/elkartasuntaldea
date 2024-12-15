@@ -318,6 +318,7 @@
                     ]
                 };
 
+                /*
                 const progressConfig = {
                     type: 'bar',
                     data: progressData,
@@ -331,6 +332,24 @@
                             y: { title: { display: true, text: langLabels.funds } } }
                     }
                 };
+                */
+
+                const progressConfig = {
+                    type: 'doughnut', // Changed from 'bar' to 'doughnut'
+                    data: progressData,
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: { position: 'top' },
+                            tooltip: {
+                                callbacks: {
+                                    label: ctx => `${ctx.label}: €${ctx.raw} (${((ctx.raw / config.targetAmount) * 100).toFixed(1)}%)`
+                                }
+                            }
+                        }
+                    }
+                };
+
 
                 new Chart(document.getElementById('fundingChart'), fundingConfig);
                 new Chart(document.getElementById('progressChart'), progressConfig);
