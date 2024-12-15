@@ -116,15 +116,15 @@
                 turkanaDescription: 'Para más información sobre Pole Pole Olabide visita: <a href="https://www.olabideikastola.eus/es/blog/pole-pole-olabide" target="_blank">Pole Pole Olabide</a>',
                 turkanaVideoTitle: 'Vídeo de Elkartasun Taldea - Navidades',
                 chartLabels: {
-                    hh: 'Kindergarten (HH)',
-                    lh: 'Primary (LH)',
-                    dbh: 'Secondary (DBH-BATX)',
-                    cumulative: 'Cumulative',
-                    day: 'Day of December',
-                    funds: 'Funds Collected (€)',
-                    collected: 'Collected',
-                    remaining: 'Remaining',
-                    progress: 'Campaign Progress'
+                    hh: 'Infantil (HH)',
+                    lh: 'Primaria (LH)',
+                    dbh: 'Secundaria (DBH-BATX)',
+                    cumulative: 'Acumulado',
+                    day: 'Día de diciembre',
+                    funds: 'Fondos recaudados (€)',
+                    collected: 'Recaudado',
+                    remaining: 'Restante',
+                    progress: 'Progreso de la campaña',
                 }
             },
             en: {
@@ -139,15 +139,15 @@
                 turkanaDescription: 'For more information about Pole Pole Olabide, visit: <a href="https://www.olabideikastola.eus/es/blog/pole-pole-olabide" target="_blank">Pole Pole Olabide</a>',
                 turkanaVideoTitle: 'Solidarity Team Video - Christmas',
                 chartLabels: {
-                    hh: 'Haur Hezkuntza (HH)',
-                    lh: 'Lehen Hezkuntza (LH)',
-                    dbh: 'Bigarren Hezkuntza (DBH-BATX)',
-                    cumulative: 'Metatua',
-                    day: 'Abenduko eguna',
-                    funds: 'Bildutako funtsak (€)',
-                    collected: 'Bildutako',
-                    remaining: 'Gelditzen dena',
-                    progress: 'Kanpainaren aurrerapena'
+                    hh: 'Kindergarten (HH)',
+                    lh: 'Primary (LH)',
+                    dbh: 'Secondary (DBH-BATX)',
+                    cumulative: 'Cumulative',
+                    day: 'Day of December',
+                    funds: 'Funds Collected (€)',
+                    collected: 'Collected',
+                    remaining: 'Remaining',
+                    progress: 'Campaign Progress',
                 }
             }    
         };
@@ -230,7 +230,7 @@
             //const data = await fetchSpreadsheetData();
             const filePath = 'Kalkulu-orri izengabea.xlsx';
             const data = await fetchSpreadsheetData(filePath);
-            const langLabels = selectedTexts.chartLabels;
+            let langLabels = selectedTexts.chartLabels;
             console.log('Data from file:', data);
             if (!data) return;
 
