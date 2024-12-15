@@ -81,88 +81,90 @@
     <script>
         let language = navigator.language.startsWith('es') ? 'es' : navigator.language.startsWith('en') ? 'en' : 'eus';
 
+        let texts = {
+            eus: {
+                campaignTab: 'Gabonetako Kanpaina',
+                donateTab: 'Eman',
+                turkanaTab: 'Turkana',
+                campaignTitle: 'Gabonetako kanpainaren aurrerapena',
+                campaignDescription: 'Gabonetako kanpainan jasotzen den dirua, Aztivate klinikan analisiak egiteko laborategi bat martxan jartzera eta haurrak egunean 2 bazkari izatera bideratzea. Azken finean, Turkana herriaren bizi iraupenerako izatea. <br><br>Behar gaituzte!! <br><br>Eskerrik asko zuen inplikazioagatik. <br><br><i>“Gauza txikiak dira aldaketa handien erantzuleak” - Paulo Coelho</i><br><br>ELKARTASUN TALDEA',
+                donateTitle: 'Eman',
+                donateDescription: 'Urtero bezala, laguntza ekonomiko hau bi modutan egitea posible izangoduzue: ikasleek eramango duten sobreetan dirua sartu eta ikastolarabueltatuz edota hurrengo kontu korrontean ingresatuz: <br><b>ES79 2095 3185 7710 9039 3959</b>',
+                turkanaTitle: 'Turkana',
+                turkanaDescription: 'Informazio gehiago nahi izanez gero, bisitatu Pole Pole Olabide-ri buruz: <a href="https://www.olabideikastola.eus/es/blog/pole-pole-olabide" target="_blank">Pole Pole Olabide</a>',                   
+                turkanaVideoTitle: 'Elkartasun Taldearen Bideoa - Gabonak',
+                chartLabels: {
+                    hh: 'Haur Hezkuntza (HH)',
+                    lh: 'Lehen Hezkuntza (LH)',
+                    dbh: 'Bigarren Hezkuntza (DBH-BATX)',
+                    cumulative: 'Metatua',
+                    day: 'Abenduko eguna',
+                    funds: 'Bildutako funtsak (€)',
+                    collected: 'Bildutako',
+                    remaining: 'Gelditzen dena',
+                    progress: 'Kanpainaren aurrerapena'
+                }
+            },
+            es: {
+                campaignTab: 'Campaña de Navidad',
+                donateTab: 'Donar',
+                turkanaTab: 'Turkana',
+                campaignTitle: 'Progreso de la campaña de Navidad',
+                campaignDescription: 'El dinero recaudado en la campaña de Navidad se destina a poner en marcha un laboratorio para análisis en la clínica Aztivate y a garantizar que los niños reciban dos comidas al día. En definitiva, para la supervivencia del pueblo de Turkana. <br><br>¡Nos necesitan! <br><br>Gracias por su implicación. <br><br><i>“Las pequeñas cosas son responsables de los grandes cambios” </i>- Paulo Coelho<br><br>EQUIPO DE SOLIDARIDAD',
+                donateTitle: 'Donar',
+                donateDescription: 'Como cada año, esta ayuda económica se puede realizar de dos maneras: introduciendo el dinero en los sobres que llevarán los estudiantes y devolviéndolos a la escuela o ingresándolo en la siguiente cuenta bancaria: <br><b>ES79 2095 3185 7710 9039 3959</b>',
+                turkanaTitle: 'Turkana',
+                turkanaDescription: 'Para más información sobre Pole Pole Olabide visita: <a href="https://www.olabideikastola.eus/es/blog/pole-pole-olabide" target="_blank">Pole Pole Olabide</a>',
+                turkanaVideoTitle: 'Vídeo de Elkartasun Taldea - Navidades',
+                chartLabels: {
+                    hh: 'Kindergarten (HH)',
+                    lh: 'Primary (LH)',
+                    dbh: 'Secondary (DBH-BATX)',
+                    cumulative: 'Cumulative',
+                    day: 'Day of December',
+                    funds: 'Funds Collected (€)',
+                    collected: 'Collected',
+                    remaining: 'Remaining',
+                    progress: 'Campaign Progress'
+                }
+            },
+            en: {
+                campaignTab: 'Christmas Campaign',
+                donateTab: 'Donate',
+                turkanaTab: 'Turkana',
+                campaignTitle: 'Christmas Campaign Progress',
+                campaignDescription: 'The money collected during the Christmas campaign will be used to set up a laboratory for analysis at the Aztivate clinic and to ensure that children receive two meals a day. Ultimately, it is for the survival of the Turkana people. <br><br>They need us! <br><br>Thank you for your involvement. <br><br><i>“Small things are responsible for big changes”</i> - Paulo Coelho<br><br>SOLIDARITY TEAM',
+                donateTitle: 'Donate',
+                donateDescription: 'As every year, this financial support can be made in two ways: by putting money in the envelopes that the students will carry and returning them to the school, or by depositing it in the following bank account: <br><b>ES79 2095 3185 7710 9039 3959</b>',
+                turkanaTitle: 'Turkana',
+                turkanaDescription: 'For more information about Pole Pole Olabide, visit: <a href="https://www.olabideikastola.eus/es/blog/pole-pole-olabide" target="_blank">Pole Pole Olabide</a>',
+                turkanaVideoTitle: 'Solidarity Team Video - Christmas',
+                chartLabels: {
+                    hh: 'Haur Hezkuntza (HH)',
+                    lh: 'Lehen Hezkuntza (LH)',
+                    dbh: 'Bigarren Hezkuntza (DBH-BATX)',
+                    cumulative: 'Metatua',
+                    day: 'Abenduko eguna',
+                    funds: 'Bildutako funtsak (€)',
+                    collected: 'Bildutako',
+                    remaining: 'Gelditzen dena',
+                    progress: 'Kanpainaren aurrerapena'
+                }
+            }    
+        };
+
+        let selectedTexts = texts[language];
+
+
         function setLanguage(lang) {
             language = lang;
+            selectedTexts = texts[language];
             console.log("language changed to: ", language);
-            renderTexts();
+            renderTexts(selectedTexts);
         }
 
-        function renderTexts() {
-            const texts = {
-                eus: {
-                    campaignTab: 'Gabonetako Kanpaina',
-                    donateTab: 'Eman',
-                    turkanaTab: 'Turkana',
-                    campaignTitle: 'Gabonetako kanpainaren aurrerapena',
-                    campaignDescription: 'Gabonetako kanpainan jasotzen den dirua, Aztivate klinikan analisiak egiteko laborategi bat martxan jartzera eta haurrak egunean 2 bazkari izatera bideratzea. Azken finean, Turkana herriaren bizi iraupenerako izatea. <br><br>Behar gaituzte!! <br><br>Eskerrik asko zuen inplikazioagatik. <br><br><i>“Gauza txikiak dira aldaketa handien erantzuleak” - Paulo Coelho</i><br><br>ELKARTASUN TALDEA',
-                    donateTitle: 'Eman',
-                    donateDescription: 'Urtero bezala, laguntza ekonomiko hau bi modutan egitea posible izangoduzue: ikasleek eramango duten sobreetan dirua sartu eta ikastolarabueltatuz edota hurrengo kontu korrontean ingresatuz: <br><b>ES79 2095 3185 7710 9039 3959</b>',
-                    turkanaTitle: 'Turkana',
-                    turkanaDescription: 'Informazio gehiago nahi izanez gero, bisitatu Pole Pole Olabide-ri buruz: <a href="https://www.olabideikastola.eus/es/blog/pole-pole-olabide" target="_blank">Pole Pole Olabide</a>',                   
-                    turkanaVideoTitle: 'Elkartasun Taldearen Bideoa - Gabonak',
-                    chartLabels: {
-                        hh: 'Haur Hezkuntza (HH)',
-                        lh: 'Lehen Hezkuntza (LH)',
-                        dbh: 'Bigarren Hezkuntza (DBH-BATX)',
-                        cumulative: 'Metatua',
-                        day: 'Abenduko eguna',
-                        funds: 'Bildutako funtsak (€)',
-                        collected: 'Bildutako',
-                        remaining: 'Gelditzen dena',
-                        progress: 'Kanpainaren aurrerapena'
-                    }
-                },
-                es: {
-                    campaignTab: 'Campaña de Navidad',
-                    donateTab: 'Donar',
-                    turkanaTab: 'Turkana',
-                    campaignTitle: 'Progreso de la campaña de Navidad',
-                    campaignDescription: 'El dinero recaudado en la campaña de Navidad se destina a poner en marcha un laboratorio para análisis en la clínica Aztivate y a garantizar que los niños reciban dos comidas al día. En definitiva, para la supervivencia del pueblo de Turkana. <br><br>¡Nos necesitan! <br><br>Gracias por su implicación. <br><br><i>“Las pequeñas cosas son responsables de los grandes cambios” </i>- Paulo Coelho<br><br>EQUIPO DE SOLIDARIDAD',
-                    donateTitle: 'Donar',
-                    donateDescription: 'Como cada año, esta ayuda económica se puede realizar de dos maneras: introduciendo el dinero en los sobres que llevarán los estudiantes y devolviéndolos a la escuela o ingresándolo en la siguiente cuenta bancaria: <br><b>ES79 2095 3185 7710 9039 3959</b>',
-                    turkanaTitle: 'Turkana',
-                    turkanaDescription: 'Para más información sobre Pole Pole Olabide visita: <a href="https://www.olabideikastola.eus/es/blog/pole-pole-olabide" target="_blank">Pole Pole Olabide</a>',
-                    turkanaVideoTitle: 'Vídeo de Elkartasun Taldea - Navidades',
-                    chartLabels: {
-                        hh: 'Kindergarten (HH)',
-                        lh: 'Primary (LH)',
-                        dbh: 'Secondary (DBH-BATX)',
-                        cumulative: 'Cumulative',
-                        day: 'Day of December',
-                        funds: 'Funds Collected (€)',
-                        collected: 'Collected',
-                        remaining: 'Remaining',
-                        progress: 'Campaign Progress'
-                    }
-                },
-                en: {
-                    campaignTab: 'Christmas Campaign',
-                    donateTab: 'Donate',
-                    turkanaTab: 'Turkana',
-                    campaignTitle: 'Christmas Campaign Progress',
-                    campaignDescription: 'The money collected during the Christmas campaign will be used to set up a laboratory for analysis at the Aztivate clinic and to ensure that children receive two meals a day. Ultimately, it is for the survival of the Turkana people. <br><br>They need us! <br><br>Thank you for your involvement. <br><br><i>“Small things are responsible for big changes”</i> - Paulo Coelho<br><br>SOLIDARITY TEAM',
-                    donateTitle: 'Donate',
-                    donateDescription: 'As every year, this financial support can be made in two ways: by putting money in the envelopes that the students will carry and returning them to the school, or by depositing it in the following bank account: <br><b>ES79 2095 3185 7710 9039 3959</b>',
-                    turkanaTitle: 'Turkana',
-                    turkanaDescription: 'For more information about Pole Pole Olabide, visit: <a href="https://www.olabideikastola.eus/es/blog/pole-pole-olabide" target="_blank">Pole Pole Olabide</a>',
-                    turkanaVideoTitle: 'Solidarity Team Video - Christmas',
-                    chartLabels: {
-                        hh: 'Haur Hezkuntza (HH)',
-                        lh: 'Lehen Hezkuntza (LH)',
-                        dbh: 'Bigarren Hezkuntza (DBH-BATX)',
-                        cumulative: 'Metatua',
-                        day: 'Abenduko eguna',
-                        funds: 'Bildutako funtsak (€)',
-                        collected: 'Bildutako',
-                        remaining: 'Gelditzen dena',
-                        progress: 'Kanpainaren aurrerapena'
-                    }
-                };
-                renderCharts(selectedTexts.chartLabels); // Pass localized labels to renderCharts
-            };
-
-            const selectedTexts = texts[language];
-
+        function renderTexts(selectedTexts) {
+            
             document.getElementById('campaignTab').innerText = selectedTexts.campaignTab;
             document.getElementById('donateTab').innerText = selectedTexts.donateTab;
             document.getElementById('turkanaTab').innerText = selectedTexts.turkanaTab;
@@ -175,6 +177,9 @@
 
             document.getElementById('turkanaTitle').innerText = selectedTexts.turkanaTitle;
             document.getElementById('turkanaDescription').innerHTML = selectedTexts.turkanaDescription;
+
+            renderCharts(selectedTexts.chartLabels); // Pass localized labels to renderCharts
+
         }
 
         function showTab(tabId) {
@@ -183,7 +188,7 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            renderTexts();
+            renderTexts(selectedTexts);
 
             /*
             async function fetchSpreadsheetData() {
@@ -225,7 +230,7 @@
             }
             */
 
-            async function renderCharts() {
+            async function renderCharts(langLabels) {
                 //const data = await fetchSpreadsheetData();
                 const filePath = 'Kalkulu-orri izengabea.xlsx';
                 const data = await fetchSpreadsheetData(filePath);
@@ -236,7 +241,7 @@
                 const config = await fetchConfig();
                 if (!config) return;
 
-
+                /*
                 // Localization for chart labels
                 const translations = {
                     en: {
@@ -276,6 +281,7 @@
 
                 const langLabels = translations[language || 'eus']; // Default to Basque if language is not set
                 console.log(language, langLabels);
+                */
 
                 const fundingData = {
                     labels: labels,
@@ -366,7 +372,7 @@
                             y: { title: { display: true, text: langLabels.funds } } }
                     }
                 };
-                */
+                
 
                 const progressConfig = {
                     type: 'doughnut', // Changed from 'bar' to 'doughnut'
@@ -383,6 +389,29 @@
                         }
                     }
                 };
+                */
+
+                const progressConfig = {
+                    type: 'doughnut', // Doughnut chart type
+                    data: progressData,
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: { position: 'top' },
+                            tooltip: {
+                                callbacks: {
+                                    label: function (ctx) {
+                                        const localizedLabel = ctx.dataset.label || chartLabels.progress;
+                                        const value = ctx.raw || 0;
+                                        const percentage = ((value / config.targetAmount) * 100).toFixed(1);
+                                        return `${localizedLabel} - ${ctx.label || chartLabels[ctx.label.toLowerCase()]}: €${value} (${percentage}%)`;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                };
+
 
 
                 new Chart(document.getElementById('fundingChart'), fundingConfig);
@@ -471,7 +500,7 @@
                 }
             }
 
-            renderCharts();
+            renderCharts(selectedTexts.chartLabels);
             renderTurkanaVideo();
 
             // Registering the service worker for PWA support
