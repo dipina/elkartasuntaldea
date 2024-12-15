@@ -99,7 +99,18 @@
                     donateDescription: 'Urtero bezala, laguntza ekonomiko hau bi modutan egitea posible izangoduzue: ikasleek eramango duten sobreetan dirua sartu eta ikastolarabueltatuz edota hurrengo kontu korrontean ingresatuz: <br><b>ES79 2095 3185 7710 9039 3959</b>',
                     turkanaTitle: 'Turkana',
                     turkanaDescription: 'Informazio gehiago nahi izanez gero, bisitatu Pole Pole Olabide-ri buruz: <a href="https://www.olabideikastola.eus/es/blog/pole-pole-olabide" target="_blank">Pole Pole Olabide</a>',                   
-                    turkanaVideoTitle: 'Elkartasun Taldearen Bideoa - Gabonak'
+                    turkanaVideoTitle: 'Elkartasun Taldearen Bideoa - Gabonak',
+                    chartLabels: {
+                        hh: 'Haur Hezkuntza (HH)',
+                        lh: 'Lehen Hezkuntza (LH)',
+                        dbh: 'Bigarren Hezkuntza (DBH-BATX)',
+                        cumulative: 'Metatua',
+                        day: 'Abenduko eguna',
+                        funds: 'Bildutako funtsak (€)',
+                        collected: 'Bildutako',
+                        remaining: 'Gelditzen dena',
+                        progress: 'Kanpainaren aurrerapena'
+                    }
                 },
                 es: {
                     campaignTab: 'Campaña de Navidad',
@@ -111,7 +122,18 @@
                     donateDescription: 'Como cada año, esta ayuda económica se puede realizar de dos maneras: introduciendo el dinero en los sobres que llevarán los estudiantes y devolviéndolos a la escuela o ingresándolo en la siguiente cuenta bancaria: <br><b>ES79 2095 3185 7710 9039 3959</b>',
                     turkanaTitle: 'Turkana',
                     turkanaDescription: 'Para más información sobre Pole Pole Olabide visita: <a href="https://www.olabideikastola.eus/es/blog/pole-pole-olabide" target="_blank">Pole Pole Olabide</a>',
-                    turkanaVideoTitle: 'Vídeo de Elkartasun Taldea - Navidades'
+                    turkanaVideoTitle: 'Vídeo de Elkartasun Taldea - Navidades',
+                    chartLabels: {
+                        hh: 'Kindergarten (HH)',
+                        lh: 'Primary (LH)',
+                        dbh: 'Secondary (DBH-BATX)',
+                        cumulative: 'Cumulative',
+                        day: 'Day of December',
+                        funds: 'Funds Collected (€)',
+                        collected: 'Collected',
+                        remaining: 'Remaining',
+                        progress: 'Campaign Progress'
+                    }
                 },
                 en: {
                     campaignTab: 'Christmas Campaign',
@@ -123,8 +145,20 @@
                     donateDescription: 'As every year, this financial support can be made in two ways: by putting money in the envelopes that the students will carry and returning them to the school, or by depositing it in the following bank account: <br><b>ES79 2095 3185 7710 9039 3959</b>',
                     turkanaTitle: 'Turkana',
                     turkanaDescription: 'For more information about Pole Pole Olabide, visit: <a href="https://www.olabideikastola.eus/es/blog/pole-pole-olabide" target="_blank">Pole Pole Olabide</a>',
-                    turkanaVideoTitle: 'Solidarity Team Video - Christmas'
-                }
+                    turkanaVideoTitle: 'Solidarity Team Video - Christmas',
+                    chartLabels: {
+                        hh: 'Haur Hezkuntza (HH)',
+                        lh: 'Lehen Hezkuntza (LH)',
+                        dbh: 'Bigarren Hezkuntza (DBH-BATX)',
+                        cumulative: 'Metatua',
+                        day: 'Abenduko eguna',
+                        funds: 'Bildutako funtsak (€)',
+                        collected: 'Bildutako',
+                        remaining: 'Gelditzen dena',
+                        progress: 'Kanpainaren aurrerapena'
+                    }
+                };
+                renderCharts(selectedTexts.chartLabels); // Pass localized labels to renderCharts
             };
 
             const selectedTexts = texts[language];
