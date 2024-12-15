@@ -80,7 +80,6 @@
 
     <script>
         let language = navigator.language.startsWith('es') ? 'es' : navigator.language.startsWith('en') ? 'en' : 'eus';
-
         let texts = {
             eus: {
                 campaignTab: 'Gabonetako Kanpaina',
@@ -154,6 +153,9 @@
         };
 
         let selectedTexts = texts[language];
+
+        let fundingChartInstance = null; // To store the funding chart instance
+        let progressChartInstance = null; // To store the progress chart instance
 
         function setLanguage(lang) {
             language = lang;
@@ -409,8 +411,35 @@
 
 
 
-            new Chart(document.getElementById('fundingChart'), fundingConfig);
-            new Chart(document.getElementById('progressChart'), progressConfig);
+            //new Chart(document.getElementById('fundingChart'), fundingConfig);
+            //new Chart(document.getElementById('progressChart'), progressConfig);
+            // Update or Create Funding Chart
+            if (fundingChartInstance) {
+                fundingChartInstance.data.labels = labels; // Update labels
+                fundingChartInstance.data.datasets = fundingData.datasets; // Update datasets
+                fundingChartInstance.options.scales.x.title.text = langLabels.day; // Update x-axis title
+                fundingChartInstance.options.scales.y.title.text = langLabels.funds; // Update y-axis title
+                fundingChartInstance.update(); // Apply updates
+            } else {
+                fundingChartInstance = new Chart(document.getElementById('fundingChart'), {
+                    type: 'line',
+                    data: fundingData,
+                    options: fundingConfig
+                });
+            }
+
+            // Update or Create Progress Chart
+            if (progressChartInstance) {
+                progressChartInstance.data.labels = progressData.labels; // Update labels
+                progressChartInstance.data.datasets = progressData.datasets; // Update datasets
+                progressChartInstance.update(); // Apply updates
+            } else {
+                progressChartInstance = new Chart(document.getElementById('progressChart'), {
+                    type: 'doughnut',
+                    data: progressData,
+                    options: progressConfig
+                });
+            }
         }
         
         async function fetchSpreadsheetData(filePath) {
