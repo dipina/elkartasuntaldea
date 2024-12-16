@@ -379,9 +379,8 @@
                     bachelor.push(dbhValue);
 
                     // Calculate cumulative total
-                    const totalCol = hhValue + lhValue + dbhValue;
-                    total += totalCol;
-                    console.log (day, hhValue, lhValue, dbhValue, totalCol, total);
+                    const total = hhValue + lhValue + dbhValue;
+                    console.log (day, hhValue, lhValue, dbhValue, total);
                     //console.log(totalRow);
                     cumulative.push(total);
                 }
