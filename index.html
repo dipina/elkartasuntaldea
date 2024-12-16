@@ -366,11 +366,11 @@
                     // Extract data, cleaning up non-numeric characters like euro signs
                     const day = row[1].toString().trim();
                     //const hhValue = parseFloat(row[2]?.toString().replace(/[^\d.-]/g, '') || '0');
-                    hhValue += parseFloat((row[2] !== undefined ? row[2] : '0').toString().replace(/[^\d.-]/g, '')) || 0;
+                    hhValue = (parseFloat((row[2] !== undefined ? row[2] : '0').toString().replace(/[^\d.-]/g, '')) || 0) + hhValue;
                     //const lhValue = parseFloat(row[3]?.toString().replace(/[^\d.-]/g, '') || '0');
-                    lhValue += parseFloat((row[3] !== undefined ? row[3] : '0').toString().replace(/[^\d.-]/g, '')) || 0;
+                    lhValue = (parseFloat((row[3] !== undefined ? row[3] : '0').toString().replace(/[^\d.-]/g, '')) || 0) + lhValue;
                     //const dbhValue = parseFloat(row[4]?.toString().replace(/[^\d.-]/g, '') || '0');
-                    dbhValue += parseFloat((row[4] !== undefined ? row[4] : '0').toString().replace(/[^\d.-]/g, '')) || 0;
+                    dbhValue = (parseFloat((row[4] !== undefined ? row[4] : '0').toString().replace(/[^\d.-]/g, '')) || 0) + dbhValue;
 
                     // Populate arrays
                     labels.push(day);
@@ -379,8 +379,9 @@
                     bachelor.push(dbhValue);
 
                     // Calculate cumulative total
-                    const totalRow = hhValue + lhValue + dbhValue;
-                    total += totalRow;
+                    const totalCol = hhValue + lhValue + dbhValue;
+                    total += totalCol;
+                    console.log (hhValue, lhValue, dbhValue, totalCol, total);
                     //console.log(totalRow);
                     cumulative.push(total);
                 }
